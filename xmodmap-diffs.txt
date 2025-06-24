@@ -1,0 +1,31 @@
+diff xmodmap-new xmodmap-orig
+173c173
+< keycode 180 = Escape NoSymbol Escape
+---
+> keycode 180 = XF86HomePage NoSymbol XF86HomePage
+178c178
+< keycode 185 = 
+---
+> keycode 185 = XF86ScrollUp NoSymbol XF86ScrollUp
+182,191c182,191
+< keycode 189 = F19 F19 F19
+< keycode 190 = F20 F20 F20
+< keycode 191 = F13 F13 F13
+< keycode 192 = F14 F14 F14
+< keycode 193 = F15 F15 F15
+< keycode 194 = F16 F16 F16
+< keycode 195 = F17 F17 F17
+< keycode 196 = F18 F18 F18
+< keycode 197 = 
+< keycode 198 = 
+---
+> keycode 189 = XF86New NoSymbol XF86New
+> keycode 190 = Redo NoSymbol Redo
+> keycode 191 = XF86Tools NoSymbol XF86Tools
+> keycode 192 = XF86Launch5 NoSymbol XF86Launch5
+> keycode 193 = XF86Launch6 NoSymbol XF86Launch6
+> keycode 194 = XF86Launch7 NoSymbol XF86Launch7
+> keycode 195 = XF86Launch8 NoSymbol XF86Launch8
+> keycode 196 = XF86Launch9 NoSymbol XF86Launch9
+> keycode 197 =
+> keycode 198 = XF86AudioMicMute NoSymbol XF86AudioMicMute

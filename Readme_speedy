@@ -1,0 +1,107 @@
+
+Readme
+
+speedy.c
+
+sudo speedy [--debug]
+
+One piece of the package implementing macropad CAT functionality.
+
+speedy.c is a background daemon that communicates with an FTDX10 radio over a serial port (e.g., /dev/ttyUSB0) to read and control a numeric "speed" value using the rotary encoder knob on a macropad.  It assumes the macropad rotary control has been mapped to F15 (click) F19 & F20 (counterclockwise & clockwise).   This can be changed in the code #DEFINEs .   It also assumes a "nullbits SCRAMBLE" macropad.  Name of the device can also be changed in the code #DEFINEs.
+
+The reason for implementing this daemon in the first place is that there is no CAT command 
+for incrementing or decrementing keyer speed directly.  The current speed needs to be saved. 
+Otherwise a simple keyboard shortcut would have been fine.
+
+Side note -- toggle features like Breakin on/off and Keyer on/off are not handled here -- they are
+implemented as simple keyboard application shortcuts, configured in xfce4-keyboard-settings.
+
+Another side note -- may need to use xmodmap to ensure that keymappings are correct.
+
+-- Dependencies
+    Assumes FTDX10 cat commands (see FTDX10 CAT manual for details)
+    Assumes the correct keybindings have been set in xmodmap -- if speedy
+       doesn't seem to be responding to keypresses, first try xmodmap xmodmap-new
+
+ 
+🔧 Features
+
+    Communicates with serial device at 38400 baud.
+    Listens to a specific Linux input event device (e.g. /dev/input/event10).
+    Debounces keypresses to avoid duplicate triggers.
+    Automatically queries and stores the initial speed value at startup.
+    Runs as a silent background daemon.
+    Rotary encoder support via exact device name
+    Dynamic input device detection
+    Debounced input
+    Debug commandline option: no demonize and prints debugging info
+
+Key mapping
+
+    breakin on/off
+    keyer on/off
+    speed up/down (on knob rotation)
+    fetch radio speed (on knob click)
+
+
+
+🖧 Serial Format
+
+    On startup, it sends KS; to request the current speed.
+
+    It expects a response like: KS123;
+
+    Extracts the numeric value 123.
+
+    Upon keypress, sends back the new speed as: KS124;, KS122;, etc.
+
+📦 Requirements
+
+    Linux system with:
+
+        /dev/ttyUSB0 connected to a compatible serial device
+
+        A multimedia keyboard (with volume keys)
+
+        Access to the correct input device (see below)
+
+🔍 Finding Your Input Device
+
+To find the correct event device for your keyboard:
+
+sudo evtest
+
+Press volume up/down and note which /dev/input/eventX logs those key events.
+
+Update the source accordingly:
+
+#define INPUT_EVENT_DEVICE "/dev/input/eventX"
+
+🛠️ Building
+
+gcc speedy.c -o speedy
+
+🚀 Running
+
+sudo ./speedy           # runs as a daemon
+sudo ./speedy --debug   # runs at the commandline and prints debugging output
+
+It will daemonize automatically and run in the background.
+
+To stop it:
+
+sudo killall -9 speedy
+
+🐞 Debugging
+
+To debug or test interactively:
+
+    Comment out the daemonize(); line in main().
+
+    Add printf() statements.
+
+    Run it directly in a terminal.
+
+📎 Use Case
+
+This is used to enable a macropad knob to control an FTDX10 radio via CAT keyer speed commands, which are of the form KS###;.
